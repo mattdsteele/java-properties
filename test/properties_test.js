@@ -72,5 +72,18 @@ exports['properties'] = {
     test.expect(1);
     test.equal(undefined, props.get('undefinedValue'));
     test.done();
+  },
+  'additional property': function(test) {
+    test.expect(2);
+    test.equal(undefined, props.get('undefinedValue'));
+    props.set('undefinedValue', '14.8');
+    test.equal('14.8', props.get('undefinedValue'));
+    test.done();
+  },
+  'with backslashes': function(test) {
+    var key = "^(0?[1-9]|1[012])\\/?(0?[1-9]|[12][0-9]|3[01])$";
+    test.expect(1);
+    test.equal(key, props.get('regex.format.date'));
+    test.done();
   }
 };
