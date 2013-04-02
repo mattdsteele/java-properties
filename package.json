@@ -1,6 +1,6 @@
 {
   "name": "java-properties",
-  "description": "Read Java .properties files",
+  "description": "Reads and interpolates Java .properties files",
   "version": "0.1.0",
   "homepage": "http://github.com/mattdsteele/java-properties",
   "author": {
@@ -33,5 +33,5 @@
     "grunt-contrib-watch": "~0.2.0",
     "grunt": "~0.4.0"
   },
-  "keywords": []
+  "keywords": ["java", "properties"]
 }
