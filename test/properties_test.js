@@ -86,13 +86,6 @@ exports['properties'] = {
     test.equal(key, props.get('regex.format.date'));
     test.done();
   },
-  'problematic file': function(test) {
-    test.expect(2);
-    props = properties.of('test/fixtures/service.properties');
-    test.equal('service', props.get('service.dir'));
-    test.equal('service/secure', props.get('service.secured.dir'));
-    test.done();
-  },
   'interpolating' : function(test) {
     test.expect(1);
     test.equal('version 7 is the best!', props.interpolate('version ${ricola.version.minor} is the best!'));
