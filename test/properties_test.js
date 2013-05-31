@@ -90,5 +90,12 @@ exports['properties'] = {
     test.expect(1);
     test.equal('version 7 is the best!', props.interpolate('version ${ricola.version.minor} is the best!'));
     test.done();
+  },
+  'unix line endings' : function(test) {
+    test.expect(2);
+    props = properties.of('test/fixtures/unix.properties');
+    test.equal('value 1', props.get('value.1'));
+    test.equal('Another Value', props.get('value.2'));
+    test.done();
   }
 };
