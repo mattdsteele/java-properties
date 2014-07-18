@@ -97,5 +97,10 @@ exports['properties'] = {
     test.equal('value 1', props.get('value.1'));
     test.equal('Another Value', props.get('value.2'));
     test.done();
+  },
+  'includes multiple equals' : function(test) {
+    test.expect(1);
+    test.equal('some=value',props.get('property.with.equals'));
+    test.done();
   }
 };
