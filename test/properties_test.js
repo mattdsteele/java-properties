@@ -102,5 +102,10 @@ exports['properties'] = {
     test.expect(1);
     test.equal('some=value',props.get('property.with.equals'));
     test.done();
+  },
+  'empty string' : function (test) {
+    test.expect(1);
+    test.equal('', props.get('property.emptyString'));
+    test.done();
   }
 };
