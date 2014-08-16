@@ -110,6 +110,7 @@ exports['properties'] = {
   },
   'get keys' : function(test) {
       test.expect(1);
+      // check that properties are well loaded
       test.deepEqual(props.getKeys(), [ 'ricola.version',
          'ricola.version.major',
          'ricola.version.minor',
