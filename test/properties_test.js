@@ -107,5 +107,20 @@ exports['properties'] = {
     test.expect(1);
     test.equal('', props.get('property.emptyString'));
     test.done();
+  },
+  'get keys' : function(test) {
+      test.expect(1);
+      test.deepEqual(props.getKeys(), [ 'ricola.version',
+         'ricola.version.major',
+         'ricola.version.minor',
+         'ricola.version.symlink',
+         'ricola.withSpaces',
+         'ricola.version.prefixed',
+         'ricola.version.postfixed',
+         'ricola.recursive',
+         'regex.format.date',
+         'property.with.equals',
+         'property.emptyString' ]);
+      test.done();
   }
 };
