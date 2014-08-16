@@ -123,5 +123,32 @@ exports['properties'] = {
          'property.with.equals',
          'property.emptyString' ]);
       test.done();
+  },
+  'reset' : function(test) {
+      test.expect(1);
+      props.reset();
+      test.equals(0, props.getKeys());
+      test.done();
+  },
+  'addFile' : function(test) {
+      test.expect(6);
+      // Reset and add manually the 2 first files
+      props.reset();
+      props.addFile('test/fixtures/example.properties');
+      props.addFile('test/fixtures/example2.properties');
+      test.equal('14.47', props.get('extra.property'));
+      test.equal('444', props.get('another.property'));
+      test.equal('7', props.get('referenced.property'));
+      
+      // 'value.1' must not be defined cause it is unix.properties file
+      test.equal(undefined, props.get('value.1'));
+      // add the unix.properties file
+      props.addFile('test/fixtures/unix.properties');
+      // check that value.1 is now defined
+      test.equal('value 1', props.get('value.1'));
+      // and that old values are still there
+      test.equal('444', props.get('another.property'));
+      
+      test.done();
   }
 };
