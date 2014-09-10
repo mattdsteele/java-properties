@@ -21,14 +21,16 @@ Install the module with: `npm install java-properties`
     an.array.key=value1
     an.array.key=value2
     ]
-    values.get('an.array.key'); / returns [value1, value2]
+    values.get('an.array.key'); // returns [value1, value2]
 ```
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
 0.1.0 Initial commit
-[please fill this history ...]
+
+0.1.x Please fill this history
+
 0.1.x Add array key (the same key many time in files)
 
 ## License
