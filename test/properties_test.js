@@ -150,5 +150,22 @@ exports['properties'] = {
       test.equal('444', props.get('another.property'));
       
       test.done();
-  }
+  },
+  'array file': function(test) {
+      test.expect(5);
+      props = properties.of('test/fixtures/example.properties', 'test/fixtures/arrayExample.properties');
+      var arrayKey = props.get('arrayKey');
+      test.equal(true, Array.isArray(arrayKey));
+      test.equal(3, arrayKey.length);
+      test.equal('first : ricola-2.5', arrayKey[0]);
+      test.equal('second', arrayKey[1]);
+      test.equal('third', arrayKey[2]);
+      test.done();
+    },
+  'array file undefined': function(test) {
+        test.expect(1);
+        props = properties.of('test/fixtures/example.properties', 'test/fixtures/arrayExample.properties');
+        test.equal(undefined, props.get('arrayKeyUndefined'));
+        test.done();
+    }
 };
