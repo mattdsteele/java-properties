@@ -1,6 +1,7 @@
 'use strict';
 
-var properties = require('../lib/properties.js');
+var properties = require('../lib/properties.js'),
+    PropertiesFile = properties.PropertiesFile;
 var props;
 
 /*
@@ -167,5 +168,30 @@ exports['properties'] = {
         props = properties.of('test/fixtures/example.properties', 'test/fixtures/arrayExample.properties');
         test.equal(undefined, props.get('arrayKeyUndefined'));
         test.done();
+  },
+  'Using PropertiesFile with files provided': function(test) {
+      test.expect(2);
+      props.reset();
+      var myFile = new PropertiesFile('test/fixtures/example.properties', 'test/fixtures/arrayExample.properties');
+      test.equal(3, myFile.get('arrayKey').length);
+      myFile.reset();
+      test.equal(undefined, myFile.get('arrayKey'));
+      test.done();
+  },
+  'Using PropertiesFile with 2 different contexts': function(test) {
+      test.expect(4);
+      props.reset();
+      var myFile = new PropertiesFile();
+      myFile.of('test/fixtures/example.properties', 'test/fixtures/arrayExample.properties');
+      
+      var myOtherFile = new PropertiesFile();
+      myOtherFile.addFile('test/fixtures/example.properties');
+      myOtherFile.addFile('test/fixtures/example2.properties');
+      
+      test.equal(3, myFile.get('arrayKey').length);
+      test.equal(undefined, myFile.get('referenced.property'));
+      test.equal('some=value', myOtherFile.get('property.with.equals'));
+      test.equal('7', myOtherFile.get('referenced.property'));
+      test.done();
     }
 };

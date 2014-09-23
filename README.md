@@ -22,6 +22,14 @@ Install the module with: `npm install java-properties`
     an.array.key=value2
     ]
     values.get('an.array.key'); // returns [value1, value2]
+    
+    // Since 0.2.0 : Multiple contexts
+    var myFile = new PropertiesFile('example.properties', 'arrayExample.properties');
+    myFile.get('arrayKey');
+    
+    var myOtherFile = new PropertiesFile();
+    myOtherFile.addFile('example.properties');
+    myOtherFile.addFile('example2.properties');
 ```
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
@@ -32,6 +40,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 0.1.x Please fill this history
 
 0.1.x Add array key (the same key many time in files)
+
+0.2.0 Wrap features into a class to be able to have multiple running contexts
 
 ## License
 Licensed under the MIT license.
