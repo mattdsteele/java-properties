@@ -193,5 +193,34 @@ exports['properties'] = {
       test.equal('some=value', myOtherFile.get('property.with.equals'));
       test.equal('7', myOtherFile.get('referenced.property'));
       test.done();
-    }
+    },
+  'Using defaut value for get': function(test) {
+      test.expect(4);
+      var myFile = new PropertiesFile('test/fixtures/example.properties', 'test/fixtures/arrayExample.properties');
+      test.equal(undefined, myFile.get('referenced.property'));
+      test.equal('defaultValue', myFile.get('referenced.property', 'defaultValue'));
+      test.equal('hello', myFile.get('ricola.withSpaces'));
+      test.equal('hello', myFile.get('ricola.withSpaces', 'defaultValue'));
+      test.done();
+  },
+  'Using int value with getInt': function(test) {
+      test.expect(5);
+      var myFile = new PropertiesFile('test/fixtures/example.properties', 'test/fixtures/arrayExample.properties');
+      test.equal('7', myFile.get('ricola.version.minor'));
+      test.equal(7, myFile.getInt('ricola.version.minor'));
+      test.equal(undefined, myFile.getInt('dont.exists'));
+      test.equal(12, myFile.getInt('dont.exists', 12));
+      test.equal(true,  isNaN(myFile.getInt('ricola.withSpaces')));
+      test.done();
+  },
+  'Using float value with getFloat': function(test) {
+      test.expect(5);
+      var myFile = new PropertiesFile('test/fixtures/example.properties', 'test/fixtures/arrayExample.properties');
+      test.equal('2.5', myFile.get('ricola.version.major'));
+      test.equal(2.5, myFile.getFloat('ricola.version.major'));
+      test.equal(undefined, myFile.getFloat('dont.exists'));
+      test.equal(12.23, myFile.getFloat('dont.exists', 12.23));
+      test.equal(true,  isNaN(myFile.getFloat('ricola.withSpaces')));
+      test.done();
+  },
 };

@@ -11,11 +11,23 @@ Install the module with: `npm install java-properties`
     var values = properties.of('values.properties');
     values.get('a.key'); //returns value of a.key
     ...
-    values.getKeys(); // returns all the keys
+    // returns the value of a.key of 'defaultValue' if key is not found
+    values.get('a.key', 'defaultValue');
     ...
-    values.addFile('anotherFile.properties'); // adds another file the properties list
+    // returns the value of the a.int.key as an int or 18
+    values.getInt('a.int.key', 18);
     ...
-    values.reset(); // empty the keys previously loaded
+    // returns the value of the a.float.key as a float or 18.23
+    values.getFloat('a.float.key', 18.23);
+    ...
+    // returns all the keys
+    values.getKeys();
+    ...
+    // adds another file the properties list
+    values.addFile('anotherFile.properties');
+    ...
+    // empty the keys previously loaded
+    values.reset();
     ...
     [ -- .properties file
     an.array.key=value1
@@ -23,8 +35,10 @@ Install the module with: `npm install java-properties`
     ]
     values.get('an.array.key'); // returns [value1, value2]
     
-    // Since 0.2.0 : Multiple contexts
-    var myFile = new PropertiesFile('example.properties', 'arrayExample.properties');
+    // Multiple contexts
+    var myFile = new PropertiesFile(
+        'example.properties',
+        'arrayExample.properties');
     myFile.get('arrayKey');
     
     var myOtherFile = new PropertiesFile();
@@ -42,6 +56,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 0.1.x Add array key (the same key many time in files)
 
 0.2.0 Wrap features into a class to be able to have multiple running contexts
+
+0.2.1 Add default value to get method. Add getInt and getFloat to get an integer or float value
 
 ## License
 Licensed under the MIT license.
