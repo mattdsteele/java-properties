@@ -29,6 +29,9 @@ Install the module with: `npm install java-properties`
     // returns the value of the a.float.key as a float or 18.23
     values.getFloat('a.float.key', 18.23);
     ...
+    // returns the value of the a.bool.key as an boolean. Parse true or false with any case or 0 or 1
+    values.getBoolean('a.bool.key', true);
+    ...
     // returns all the keys
     values.getKeys();
     ...
@@ -67,6 +70,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 0.2.0 Wrap features into a class to be able to have multiple running contexts
 
 0.2.1 Add default value to get method. Add getInt and getFloat to get an integer or float value
+
+0.2.2 Add getBoolean method to get a value as a boolean. Accepted values are true, TRUE, false, FALSE, 0, 1
 
 ## License
 Licensed under the MIT license.

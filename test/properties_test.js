@@ -223,4 +223,21 @@ exports['properties'] = {
       test.equal(true,  isNaN(myFile.getFloat('ricola.withSpaces')));
       test.done();
   },
+  'Using boolean value with getBoolean' : function(test) {
+      test.expect(11);
+      var myFile = new PropertiesFile('test/fixtures/boolean.properties');
+      test.equal(true, myFile.getBoolean('boolean.true1'));
+      test.equal(true, myFile.getBoolean('boolean.true2'));
+      test.equal(true, myFile.getBoolean('boolean.true3'));
+      test.equal(true, myFile.getBoolean('boolean.true4'));
+      test.equal(false, myFile.getBoolean('boolean.false1'));
+      test.equal(false, myFile.getBoolean('boolean.false2'));
+      test.equal(false, myFile.getBoolean('boolean.false3'));
+      test.equal(false, myFile.getBoolean('boolean.false4'));
+      
+      test.equal(false, myFile.getBoolean('boolean.empty', false));
+      test.equal(true, myFile.getBoolean('boolean.empty', true));
+      test.equal(false, myFile.getBoolean('boolean.empty'));
+      test.done();
+  },
 };
