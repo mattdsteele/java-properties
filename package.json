@@ -1,7 +1,7 @@
 {
   "name": "java-properties",
   "description": "Reads and interpolates Java .properties files",
-  "version": "0.2.2+",
+  "version": "0.2.2",
   "homepage": "http://github.com/mattdsteele/java-properties",
   "author": {
     "name": "Matt Steele",
