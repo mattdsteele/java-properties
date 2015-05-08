@@ -240,4 +240,13 @@ exports['properties'] = {
       test.equal(false, myFile.getBoolean('boolean.empty'));
       test.done();
   },
+
+  'getMatchingKeys': function(test) {
+    test.expect(2);
+      var myFile = new PropertiesFile('test/fixtures/example.properties');
+      var props = myFile.getMatchingKeys('property');
+      test.equal(2, props.length);
+      test.deepEqual(['property.with.equals', 'property.emptyString'], props);
+      test.done();
+  }
 };
