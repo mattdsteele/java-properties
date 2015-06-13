@@ -61,18 +61,17 @@ Install the module with: `npm install java-properties`
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-0.1.0 Initial commit
-0.1.5: Support empty strings
-0.1.6 New API: `getKeys`
-0.1.7 New APIs: `addFile` and `reset`
-0.1.8 Add array key (the same key many time in files)
 
-0.2.0 Wrap features into a class to be able to have multiple running contexts
-
-0.2.1 Add default value to get method. Add getInt and getFloat to get an integer or float value
-
-0.2.2 Add getBoolean method to get a value as a boolean. Accepted values are true, TRUE, false, FALSE, 0, 1
-0.2.3 Add getMatchingKeys method
+* 0.1.0 Initial commit
+* 0.1.5 Support empty strings
+* 0.1.6 New API: `getKeys`
+* 0.1.7 New APIs: `addFile` and `reset`
+* 0.1.8 Add array key (the same key many time in files)
+* 0.2.0 Wrap features into a class to be able to have multiple running contexts
+* 0.2.1 Add default value to get method. Add getInt and getFloat to get an integer or float value
+* 0.2.2 Add getBoolean method to get a value as a boolean. Accepted values are true, TRUE, false, FALSE, 0, 1
+* 0.2.3 Add getMatchingKeys method
+* 0.2.4 Allow multi-line properties
 
 ## License
 Licensed under the MIT license.

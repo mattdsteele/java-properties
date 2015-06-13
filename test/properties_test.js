@@ -122,7 +122,11 @@ exports['properties'] = {
          'ricola.recursive',
          'regex.format.date',
          'property.with.equals',
-         'property.emptyString' ]);
+         'property.emptyString',
+         'withNewline',
+         'withIndentation',
+         'targetCities'
+      ]);
       test.done();
   },
   'reset' : function(test) {
@@ -248,5 +252,23 @@ exports['properties'] = {
       test.equal(2, props.length);
       test.deepEqual(['property.with.equals', 'property.emptyString'], props);
       test.done();
-  }
+  },
+
+  'with newline': function(test) {
+    test.expect(1);
+    test.equal('Welcome to The Monkey House!', props.get('withNewline'));
+    test.done();
+  },
+
+  'with indentations': function(test) {
+    test.expect(1);
+    test.equal('Welcome to The Rock.', props.get('withIndentation'));
+    test.done();
+  },
+
+  'multiple backslashes': function(test) {
+    test.expect(1);
+    test.equal('Detroit,Chicago,Los Angeles', props.get('targetCities'));
+    test.done();
+  },
 };
