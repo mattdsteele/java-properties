@@ -25,7 +25,8 @@
     "node": ">= 0.6.0"
   },
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "prepublish": "gulp build-and-test"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
