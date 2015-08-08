@@ -72,6 +72,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * 0.2.2 Add getBoolean method to get a value as a boolean. Accepted values are true, TRUE, false, FALSE, 0, 1
 * 0.2.3 Add getMatchingKeys method
 * 0.2.4 Allow multi-line properties
+* 0.2.5 Refactorings, no new features
 
 ## License
 Licensed under the MIT license.
