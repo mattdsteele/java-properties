@@ -4,8 +4,8 @@
   "version": "0.2.4",
   "homepage": "http://github.com/mattdsteele/java-properties",
   "author": {
-    "name": "Matt Steele",
-    "email": "orphum@gmail.com"
+    "email": "orphum@gmail.com",
+    "name": "Matt Steele"
   },
   "repository": {
     "type": "git",
@@ -25,13 +25,17 @@
     "node": ">= 0.6.0"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "test": "gulp test"
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.1.1",
-    "grunt-contrib-nodeunit": "^0.4.0",
-    "grunt-contrib-watch": "~0.2.0",
-    "grunt": "~0.4.1"
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-nodeunit": "0.0.5",
+    "gulp-sequence": "^0.4.0"
   },
-  "keywords": ["java", "properties"]
+  "keywords": [
+    "java",
+    "properties"
+  ]
 }

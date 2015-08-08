@@ -270,5 +270,5 @@ exports['properties'] = {
     test.expect(1);
     test.equal('Detroit,Chicago,Los Angeles', props.get('targetCities'));
     test.done();
-  },
+  }
 };
