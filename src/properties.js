@@ -106,7 +106,11 @@ class PropertiesFile {
     return s
         .replace(/\\\\/g, '\\')
         .replace(/\$\{([A-Za-z0-9\.]*)\}/g, function (match) {
-            return me.get(match.substring(2, match.length - 1));
+            var values = me.get(match.substring(2, match.length - 1));
+            if (Array.isArray(values)) {
+                return values[values.length - 1];
+            }
+            else { return values; }
         });
 };
 
