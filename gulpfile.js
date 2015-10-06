@@ -16,7 +16,7 @@ gulp.task('babel', function() {
     .pipe(babel())
     .pipe(gulp.dest('lib'));
 });
-gulp.task('test', function() {
+gulp.task('test', ['babel'], function() {
   return gulp.src('test/**/*.js')
     .pipe(nodeunit());
 });
