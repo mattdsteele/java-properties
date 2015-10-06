@@ -1,5 +1,7 @@
 # java-properties
 
+![travis](https://travis-ci.org/mattdsteele/java-properties.svg)
+
 Read Java .properties files. Supports adding dynamically some files and array key value (same key multiple times)
 
 ## Getting Started
