@@ -74,15 +74,38 @@ class PropertiesFile {
     }
     return defaultValue;
 };
+    
+  getLast(key, defaultValue) {
+    if (this.objs.hasOwnProperty(key)) {
+        if (Array.isArray(this.objs[key])) {
+            var lg = this.objs[key].length;
+            return this.interpolate(this.objs[key][lg - 1]);
+        } else {
+            return typeof this.objs[key] === 'undefined' ? '' : this.interpolate(this.objs[key]);
+        }
+    }
+    return defaultValue;
+};
+    
+  getFirst(key, defaultValue) {
+    if (this.objs.hasOwnProperty(key)) {
+        if (Array.isArray(this.objs[key])) {
+            return this.interpolate(this.objs[key][0]);
+        } else {
+            return typeof this.objs[key] === 'undefined' ? '' : this.interpolate(this.objs[key]);
+        }
+    }
+    return defaultValue;
+};
 
   getInt(key, defaultIntValue) {
-    let val = this.get(key);
+    let val = this.getLast(key);
     if (!val) { return defaultIntValue; }
     else { return parseInt(val, 10); }
 };
 
   getFloat(key, defaultFloatValue) {
-    let val = this.get(key);
+    let val = this.getLast(key);
     if (!val) { return defaultFloatValue; }
     else { return parseFloat(val); }
 };
@@ -92,7 +115,7 @@ class PropertiesFile {
         return !(/^(false|0)$/i).test(b) && !!b;
     }
     
-    let val = this.get(key);
+    let val = this.getLast(key);
     if (!val) { return defaultBooleanValue || false; }
     else { return parseBool(val); }    
 };
@@ -106,7 +129,7 @@ class PropertiesFile {
     return s
         .replace(/\\\\/g, '\\')
         .replace(/\$\{([A-Za-z0-9\.]*)\}/g, function (match) {
-            return me.get(match.substring(2, match.length - 1));
+            return me.getLast(match.substring(2, match.length - 1));
         });
 };
 
