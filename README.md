@@ -73,6 +73,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * 0.2.3 Add getMatchingKeys method
 * 0.2.4 Allow multi-line properties
 * 0.2.5 Refactorings, no new features
+* 0.2.6 FIX interpolation when a property is multivalued
 
 ## License
 Licensed under the MIT license.
