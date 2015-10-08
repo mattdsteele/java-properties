@@ -271,12 +271,26 @@ exports['properties'] = {
     test.done();
   },
   'Multivalued property in interpolation' : function(test) {
-      test.expect(4);
+      test.expect(6);
       var myFile = new PropertiesFile('test/fixtures/multivalued.properties');
       test.equal(myFile.get('multi.value').length, 2);
       test.equal(myFile.get('multi.value')[0], 'value1');
       test.equal(myFile.get('multi.value')[1], 'value2');
+      test.equal(myFile.getLast('multi.value'), 'value2');
+      test.equal(myFile.getFirst('multi.value'), 'value1');
       test.equal('The value is value2', myFile.get('multi.interpolated.value'));
+      test.done();
+  },
+  'Multivalued boolean property' : function(test) {
+      test.expect(1);
+      var myFile = new PropertiesFile('test/fixtures/multivalued.properties');
+      test.equal(myFile.getBoolean('multi.bool.value'), true);
+      test.done();
+  },
+  'Multivalued int property' : function(test) {
+      test.expect(1);
+      var myFile = new PropertiesFile('test/fixtures/multivalued.properties');
+      test.equal(myFile.getInt('multi.int.value'), 1);
       test.done();
   }
 };
