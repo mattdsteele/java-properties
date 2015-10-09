@@ -5,7 +5,7 @@
  * Licensed under the MIT license.
  */
 
-let fs = require('fs'), util = require('util');
+let fs = require('fs');
 
 class PropertiesFile {
   constructor(...args) {
