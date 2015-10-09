@@ -292,5 +292,13 @@ exports['properties'] = {
       var myFile = new PropertiesFile('test/fixtures/multivalued.properties');
       test.equal(myFile.getInt('multi.int.value'), 1);
       test.done();
+  },
+  'utf8 strings' : function(test) {
+      test.expect(2);
+      var myFile = new PropertiesFile('test/fixtures/utf8.properties');
+      var str = myFile.get('utf8.string');
+      test.equal(str, '\u2601 a string with accent : crédits seront très bientôt épuisés');
+      test.equal(str.charAt(0),String.fromCharCode(0x2601));
+      test.done();
   }
 };

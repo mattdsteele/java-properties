@@ -5,7 +5,7 @@
  * Licensed under the MIT license.
  */
 
-let fs = require('fs');
+let fs = require('fs'), util = require('util');
 
 class PropertiesFile {
   constructor(...args) {
@@ -33,7 +33,7 @@ class PropertiesFile {
             }
         } else {
             // the key does not exists
-            this.objs[key] = value;
+            this.objs[key] = unescape(JSON.parse('"' + value.replace('"', '\\"') + '"'));
         }
     }
 };
