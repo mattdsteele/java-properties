@@ -33,7 +33,7 @@ class PropertiesFile {
             }
         } else {
             // the key does not exists
-            this.objs[key] = unescape(JSON.parse('"' + value.replace('"', '\\"') + '"'));
+            this.objs[key] = unescape(JSON.parse('"' + value.replace(new RegExp('"', 'g'), '\\"') + '"'));
         }
     }
 };

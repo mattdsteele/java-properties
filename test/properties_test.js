@@ -300,5 +300,12 @@ exports['properties'] = {
       test.equal(str, '\u2601 a string with accent : crédits seront très bientôt épuisés');
       test.equal(str.charAt(0),String.fromCharCode(0x2601));
       test.done();
+  },
+  'double quoted strings' : function(test) {
+      test.expect(1);
+      var myFile = new PropertiesFile('test/fixtures/doublequoted.properties');
+      var str = myFile.get('double.quoted.string');
+      test.equal(str, 'The first " and the second " should be replaced. Can we replace " in interpolation ?');
+      test.done();
   }
 };
