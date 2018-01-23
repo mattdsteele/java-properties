@@ -33,7 +33,11 @@ class PropertiesFile {
             }
         } else {
             // the key does not exists
-            this.objs[key] = unescape(JSON.parse('"' + value.replace(new RegExp('"', 'g'), '\\"') + '"'));
+            const escapedValue = value
+              .replace(/"/g, '\\"')   // escape "
+              .replace(/\\:/g, ':')   // remove \ before :
+              .replace(/\\=/g, '=');  // remove \ before =
+            this.objs[key] = unescape(JSON.parse('"' + escapedValue + '"'));
         }
     }
 };
@@ -74,7 +78,7 @@ class PropertiesFile {
     }
     return defaultValue;
 };
-    
+
   getLast(key, defaultValue) {
     if (this.objs.hasOwnProperty(key)) {
         if (Array.isArray(this.objs[key])) {
@@ -86,7 +90,7 @@ class PropertiesFile {
     }
     return defaultValue;
 };
-    
+
   getFirst(key, defaultValue) {
     if (this.objs.hasOwnProperty(key)) {
         if (Array.isArray(this.objs[key])) {
@@ -114,10 +118,10 @@ class PropertiesFile {
     function parseBool(b) {
         return !(/^(false|0)$/i).test(b) && !!b;
     }
-    
+
     let val = this.getLast(key);
     if (!val) { return defaultBooleanValue || false; }
-    else { return parseBool(val); }    
+    else { return parseBool(val); }
 };
 
   set(key, value) {
@@ -165,4 +169,3 @@ let of = function(...args) {
 };
 
 export { PropertiesFile, of };
-

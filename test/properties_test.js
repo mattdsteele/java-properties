@@ -144,7 +144,7 @@ exports['properties'] = {
       test.equal('14.47', props.get('extra.property'));
       test.equal('444', props.get('another.property'));
       test.equal('7', props.get('referenced.property'));
-      
+
       // 'value.1' must not be defined cause it is unix.properties file
       test.equal(undefined, props.get('value.1'));
       // add the unix.properties file
@@ -153,7 +153,7 @@ exports['properties'] = {
       test.equal('value 1', props.get('value.1'));
       // and that old values are still there
       test.equal('444', props.get('another.property'));
-      
+
       test.done();
   },
   'array file': function(test) {
@@ -187,11 +187,11 @@ exports['properties'] = {
       props.reset();
       var myFile = new PropertiesFile();
       myFile.of('test/fixtures/example.properties', 'test/fixtures/arrayExample.properties');
-      
+
       var myOtherFile = new PropertiesFile();
       myOtherFile.addFile('test/fixtures/example.properties');
       myOtherFile.addFile('test/fixtures/example2.properties');
-      
+
       test.equal(3, myFile.get('arrayKey').length);
       test.equal(undefined, myFile.get('referenced.property'));
       test.equal('some=value', myOtherFile.get('property.with.equals'));
@@ -238,7 +238,7 @@ exports['properties'] = {
       test.equal(false, myFile.getBoolean('boolean.false2'));
       test.equal(false, myFile.getBoolean('boolean.false3'));
       test.equal(false, myFile.getBoolean('boolean.false4'));
-      
+
       test.equal(false, myFile.getBoolean('boolean.empty', false));
       test.equal(true, myFile.getBoolean('boolean.empty', true));
       test.equal(false, myFile.getBoolean('boolean.empty'));
@@ -307,5 +307,12 @@ exports['properties'] = {
       var str = myFile.get('double.quoted.string');
       test.equal(str, 'The first " and the second " should be replaced. Can we replace " in interpolation ?');
       test.done();
+  },
+  'teamcity unescaped `:` & `=`' : function(test) {
+    test.expect(2);
+    var myFile = new PropertiesFile('test/fixtures/teamcity.properties');
+    test.equal(myFile.get('teamcity.agent.dotnet.agent_url'), 'http://localhost:9090/RPC2');
+    test.equal(myFile.get('teamcity.auth.userId'), 'TeamCityBuildId=673');
+    test.done();
   }
 };
