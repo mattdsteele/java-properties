@@ -79,6 +79,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * 0.2.7 Get only last value for int and boolean in case of multivalued attribute
 * 0.2.8 FIX unicode \uxxxx char decoding
 * 0.2.9 Allow multiple double quotation marks
+* 0.2.10 fix bug with escaped : & = (thanks @Drapegnik)
 
 ## License
 Licensed under the MIT license.
