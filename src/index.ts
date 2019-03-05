@@ -5,9 +5,10 @@
  * Licensed under the MIT license.
  */
 
-let fs = require('fs');
+import fs from 'fs';
 
 class PropertiesFile {
+  objs: {};
   constructor(...args) {
     this.objs = {};
     if (args.length) {
@@ -64,7 +65,7 @@ class PropertiesFile {
     }
   }
 
-  get(key, defaultValue) {
+  get(key: string, defaultValue?: string) {
     if (this.objs.hasOwnProperty(key)) {
       if (Array.isArray(this.objs[key])) {
         let ret = [];
@@ -81,7 +82,7 @@ class PropertiesFile {
     return defaultValue;
   }
 
-  getLast(key, defaultValue) {
+  getLast(key, defaultValue?: string) {
     if (this.objs.hasOwnProperty(key)) {
       if (Array.isArray(this.objs[key])) {
         var lg = this.objs[key].length;
@@ -95,7 +96,7 @@ class PropertiesFile {
     return defaultValue;
   }
 
-  getFirst(key, defaultValue) {
+  getFirst(key, defaultValue?) {
     if (this.objs.hasOwnProperty(key)) {
       if (Array.isArray(this.objs[key])) {
         return this.interpolate(this.objs[key][0]);
@@ -108,7 +109,7 @@ class PropertiesFile {
     return defaultValue;
   }
 
-  getInt(key, defaultIntValue) {
+  getInt(key, defaultIntValue?) {
     let val = this.getLast(key);
     if (!val) {
       return defaultIntValue;
@@ -117,7 +118,7 @@ class PropertiesFile {
     }
   }
 
-  getFloat(key, defaultFloatValue) {
+  getFloat(key, defaultFloatValue?) {
     let val = this.getLast(key);
     if (!val) {
       return defaultFloatValue;
@@ -126,7 +127,7 @@ class PropertiesFile {
     }
   }
 
-  getBoolean(key, defaultBooleanValue) {
+  getBoolean(key, defaultBooleanValue?) {
     function parseBool(b) {
       return !/^(false|0)$/i.test(b) && !!b;
     }
@@ -139,11 +140,11 @@ class PropertiesFile {
     }
   }
 
-  set(key, value) {
+  set(key: string, value: string) {
     this.objs[key] = value;
   }
 
-  interpolate(s) {
+  interpolate(s: string) {
     let me = this;
     return s
       .replace(/\\\\/g, '\\')
@@ -160,7 +161,7 @@ class PropertiesFile {
     return keys;
   }
 
-  getMatchingKeys(matchstr) {
+  getMatchingKeys(matchstr: string) {
     let keys = [];
     for (let key in this.objs) {
       if (key.search(matchstr) !== -1) {
