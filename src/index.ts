@@ -8,7 +8,7 @@
 import fs from 'fs';
 
 class PropertiesFile {
-  objs: any;
+  objs: { [key: string]: any };
   constructor(...args: string[]) {
     this.objs = {};
     if (args.length) {
