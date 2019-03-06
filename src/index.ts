@@ -8,15 +8,15 @@
 import fs from 'fs';
 
 class PropertiesFile {
-  objs: {};
-  constructor(...args) {
+  objs: any;
+  constructor(...args: string[]) {
     this.objs = {};
     if (args.length) {
       this.of.apply(this, args);
     }
   }
 
-  makeKeys(line) {
+  makeKeys(line: string) {
     if (line && line.indexOf('#') !== 0) {
       let splitIndex = line.indexOf('=');
       let key = line.substring(0, splitIndex).trim();
@@ -43,7 +43,7 @@ class PropertiesFile {
     }
   }
 
-  addFile(file) {
+  addFile(file: string) {
     let data = fs.readFileSync(file, 'utf-8');
     let items = data.split(/\r?\n/);
     let me = this;
@@ -59,7 +59,7 @@ class PropertiesFile {
     }
   }
 
-  of(...args) {
+  of(...args: string[]) {
     for (let i = 0; i < args.length; i++) {
       this.addFile(args[i]);
     }
@@ -82,7 +82,7 @@ class PropertiesFile {
     return defaultValue;
   }
 
-  getLast(key, defaultValue?: string) {
+  getLast(key: string, defaultValue?: string) {
     if (this.objs.hasOwnProperty(key)) {
       if (Array.isArray(this.objs[key])) {
         var lg = this.objs[key].length;
@@ -96,7 +96,7 @@ class PropertiesFile {
     return defaultValue;
   }
 
-  getFirst(key, defaultValue?) {
+  getFirst(key: string, defaultValue?: string) {
     if (this.objs.hasOwnProperty(key)) {
       if (Array.isArray(this.objs[key])) {
         return this.interpolate(this.objs[key][0]);
@@ -109,7 +109,7 @@ class PropertiesFile {
     return defaultValue;
   }
 
-  getInt(key, defaultIntValue?) {
+  getInt(key: string, defaultIntValue?: number) {
     let val = this.getLast(key);
     if (!val) {
       return defaultIntValue;
@@ -118,7 +118,7 @@ class PropertiesFile {
     }
   }
 
-  getFloat(key, defaultFloatValue?) {
+  getFloat(key: string, defaultFloatValue?: number) {
     let val = this.getLast(key);
     if (!val) {
       return defaultFloatValue;
@@ -127,8 +127,8 @@ class PropertiesFile {
     }
   }
 
-  getBoolean(key, defaultBooleanValue?) {
-    function parseBool(b) {
+  getBoolean(key: string, defaultBooleanValue?: boolean) {
+    function parseBool(b: string) {
       return !/^(false|0)$/i.test(b) && !!b;
     }
 
@@ -144,12 +144,12 @@ class PropertiesFile {
     this.objs[key] = value;
   }
 
-  interpolate(s: string) {
+  interpolate(s: string): string {
     let me = this;
     return s
       .replace(/\\\\/g, '\\')
       .replace(/\$\{([A-Za-z0-9\.]*)\}/g, function(match) {
-        return me.getLast(match.substring(2, match.length - 1));
+        return me.getLast(match.substring(2, match.length - 1))!;
       });
   }
 
@@ -177,7 +177,7 @@ class PropertiesFile {
 }
 
 // Retain 'of' from v1 for backward compatibility
-let of = function(...args) {
+let of = function(...args: any[]) {
   let globalFile = new PropertiesFile();
   globalFile.of.apply(globalFile, args);
   return globalFile;

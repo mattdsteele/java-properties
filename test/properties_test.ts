@@ -1,11 +1,14 @@
 import { PropertiesFile, of } from '../src/index';
 import { expect } from 'chai';
 let props: PropertiesFile;
+
+// Shim for NodeUnit tests
 const test = {
   equal(expected: any, actual: any) {
     expect(expected).to.eq(actual);
   }
 };
+
 describe('properties', () => {
   beforeEach(() => {
     props = of('test/fixtures/example.properties');
@@ -114,7 +117,7 @@ describe('properties', () => {
       'test/fixtures/example.properties',
       'test/fixtures/arrayExample.properties'
     );
-    var arrayKey = props.get('arrayKey');
+    var arrayKey = props.get('arrayKey')!;
     test.equal(true, Array.isArray(arrayKey));
     test.equal(3, arrayKey.length);
     test.equal('first : ricola-2.5', arrayKey[0]);
@@ -134,7 +137,7 @@ describe('properties', () => {
       'test/fixtures/example.properties',
       'test/fixtures/arrayExample.properties'
     );
-    test.equal(3, myFile.get('arrayKey').length);
+    test.equal(3, myFile.get('arrayKey')!.length);
     myFile.reset();
     test.equal(undefined, myFile.get('arrayKey'));
   });
@@ -150,7 +153,7 @@ describe('properties', () => {
     myOtherFile.addFile('test/fixtures/example.properties');
     myOtherFile.addFile('test/fixtures/example2.properties');
 
-    test.equal(3, myFile.get('arrayKey').length);
+    test.equal(3, myFile.get('arrayKey')!.length);
     test.equal(undefined, myFile.get('referenced.property'));
     test.equal('some=value', myOtherFile.get('property.with.equals'));
     test.equal('7', myOtherFile.get('referenced.property'));
@@ -177,7 +180,7 @@ describe('properties', () => {
     test.equal(7, myFile.getInt('ricola.version.minor'));
     test.equal(undefined, myFile.getInt('dont.exists'));
     test.equal(12, myFile.getInt('dont.exists', 12));
-    test.equal(true, isNaN(myFile.getInt('ricola.withSpaces')));
+    test.equal(true, isNaN(myFile.getInt('ricola.withSpaces')!));
   });
   it('Using float value with getFloat', () => {
     var myFile = new PropertiesFile(
@@ -188,7 +191,7 @@ describe('properties', () => {
     test.equal(2.5, myFile.getFloat('ricola.version.major'));
     test.equal(undefined, myFile.getFloat('dont.exists'));
     test.equal(12.23, myFile.getFloat('dont.exists', 12.23));
-    test.equal(true, isNaN(myFile.getFloat('ricola.withSpaces')));
+    test.equal(true, isNaN(myFile.getFloat('ricola.withSpaces')!));
   });
   it('Using boolean value with getBoolean', () => {
     var myFile = new PropertiesFile('test/fixtures/boolean.properties');
@@ -225,9 +228,9 @@ describe('properties', () => {
   });
   it('Multivalued property in interpolation', () => {
     var myFile = new PropertiesFile('test/fixtures/multivalued.properties');
-    test.equal(myFile.get('multi.value').length, 2);
-    test.equal(myFile.get('multi.value')[0], 'value1');
-    test.equal(myFile.get('multi.value')[1], 'value2');
+    test.equal(myFile.get('multi.value')!.length, 2);
+    test.equal(myFile.get('multi.value')![0], 'value1');
+    test.equal(myFile.get('multi.value')![1], 'value2');
     test.equal(myFile.getLast('multi.value'), 'value2');
     test.equal(myFile.getFirst('multi.value'), 'value1');
     test.equal('The value is value2', myFile.get('multi.interpolated.value'));
@@ -243,11 +246,13 @@ describe('properties', () => {
   it('utf8 strings', () => {
     var myFile = new PropertiesFile('test/fixtures/utf8.properties');
     var str = myFile.get('utf8.string');
-    test.equal(
-      str,
-      '\u2601 a string with accent : crédits seront très bientôt épuisés'
-    );
-    test.equal(str.charAt(0), String.fromCharCode(0x2601));
+    if (typeof str === 'string') {
+      test.equal(
+        str,
+        '\u2601 a string with accent : crédits seront très bientôt épuisés'
+      );
+      expect(str.charAt(0)).to.eq(String.fromCharCode(0x2601));
+    }
   });
   it('double quoted strings', () => {
     var myFile = new PropertiesFile('test/fixtures/doublequoted.properties');
