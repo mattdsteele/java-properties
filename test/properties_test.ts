@@ -87,7 +87,9 @@ describe('properties', () => {
       'property.emptyString',
       'withNewline',
       'withIndentation',
-      'targetCities'
+      'targetCities',
+      'with-dashes',
+      'with_underscores'
     ]);
   });
   it('reset', () => {
@@ -269,5 +271,9 @@ describe('properties', () => {
       'http://localhost:9090/RPC2'
     );
     test.equal(myFile.get('teamcity.auth.userId'), 'TeamCityBuildId=673');
+  });
+  it('works with dashes and underscores', () => {
+    expect(props.get('with-dashes')).to.eq('With Dashes');
+    expect(props.get('with_underscores')).to.eq('With Underscores');
   });
 });
