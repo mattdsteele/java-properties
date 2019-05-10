@@ -148,7 +148,7 @@ class PropertiesFile {
     let me = this;
     return s
       .replace(/\\\\/g, '\\')
-      .replace(/\$\{([A-Za-z0-9\.]*)\}/g, function(match) {
+      .replace(/\$\{([A-Za-z0-9\.\-\_]*)\}/g, function(match) {
         return me.getLast(match.substring(2, match.length - 1))!;
       });
   }
