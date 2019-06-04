@@ -44,7 +44,18 @@ class PropertiesFile {
   }
 
   addFile(file: string) {
-    let data = fs.readFileSync(file, 'utf-8');
+    if(file.startsWith('http')) {
+      let request = require('sync-request');
+      let req = request('GET', file);
+      let data: Buffer = req.getBody();
+      this.setData(data.toString());
+    } else {
+      let data = fs.readFileSync(file, 'utf-8');
+      this.setData(data);
+    }
+  }
+
+  setData(data: string) {
     let items = data.split(/\r?\n/);
     let me = this;
     for (let i = 0; i < items.length; i++) {

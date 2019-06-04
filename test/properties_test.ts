@@ -1,5 +1,7 @@
 import { PropertiesFile, of } from '../src/index';
 import { expect } from 'chai';
+import { fork } from "child_process";
+
 let props: PropertiesFile;
 
 // Shim for NodeUnit tests
@@ -275,5 +277,18 @@ describe('properties', () => {
   it('works with dashes and underscores', () => {
     expect(props.get('with-dashes')).to.eq('With Dashes');
     expect(props.get('with_underscores')).to.eq('With Underscores');
+  });
+  it('loads properties from web url', () => {
+    let httpServer = fork('test/fixtures/httpserver.ts', [], {
+      execArgv: ['-r', 'ts-node/register']
+    });
+    httpServer.on('message', (message: any) => {
+      let myFile = new PropertiesFile(`http://${message.host}:${message.port}`);
+      try {
+        test.equal("value 1", myFile.get('value.1'));
+      } finally {
+        httpServer.kill()
+      }
+    });
   });
 });
