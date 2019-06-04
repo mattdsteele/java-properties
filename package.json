@@ -47,7 +47,7 @@
     "node": ">= 0.6.0"
   },
   "scripts": {
-    "test": "TS_NODE_PROJECT=\"tsconfig.test.json\" mocha --require ts-node/register \"test/**/*.ts\"",
+    "test": "TS_NODE_PROJECT=\"tsconfig.test.json\" mocha --require ts-node/register \"test/*.ts\"",
     "build": "pack build"
   },
   "devDependencies": {
@@ -67,5 +67,10 @@
   "keywords": [
     "java",
     "properties"
-  ]
+  ],
+  "dependencies": {
+    "@types/request": "^2.48.1",
+    "request": "^2.88.0",
+    "sync-request": "^6.1.0"
+  }
 }
