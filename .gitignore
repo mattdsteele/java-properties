@@ -2,3 +2,4 @@
 lib
 pkg
 *.sublime*
+*.code-workspace
