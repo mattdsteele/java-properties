@@ -264,6 +264,11 @@ describe('properties', () => {
       'The first " and the second " should be replaced. Can we replace " in interpolation ?'
     );
   });
+  it(':', () => {
+    const file = new PropertiesFile('test/fixtures/colons.properties');
+    expect(file.get('colon.value')).to.eq('value1');
+    expect(file.get('colon.additional')).to.eq('value2');
+  });
   it('teamcity unescaped `:` & `=`', () => {
     var myFile = new PropertiesFile('test/fixtures/teamcity.properties');
     test.equal(
