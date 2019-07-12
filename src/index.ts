@@ -18,7 +18,11 @@ class PropertiesFile {
 
   makeKeys(line: string) {
     if (line && line.indexOf('#') !== 0) {
-      let splitIndex = line.indexOf('=');
+      //let splitIndex = line.indexOf('=');
+      let separatorPositions = ['=',':']
+        .map((sep) => {return line.indexOf(sep);})
+        .filter((index) => {return index > -1;});
+      let splitIndex = Math.min(...separatorPositions);
       let key = line.substring(0, splitIndex).trim();
       let value = line.substring(splitIndex + 1).trim();
       // if keys already exists ...
