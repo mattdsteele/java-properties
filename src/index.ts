@@ -9,14 +9,17 @@ import fs from 'fs';
 
 class PropertiesFile {
   objs: { [key: string]: any };
+  duplicateKeys: { [file: string]: ({[key: string]: number[]}) }; //For tracking if a file is corrupt with duplicate keys - records the line numbers
+
   constructor(...args: string[]) {
     this.objs = {};
+    this.duplicateKeys = {};
     if (args.length) {
       this.of.apply(this, args);
     }
   }
 
-  makeKeys(line: string) {
+  makeKeys(line: string): string {
     if (line && line.indexOf('#') !== 0) {
       //let splitIndex = line.indexOf('=');
       let separatorPositions = ['=',':']
@@ -49,13 +52,18 @@ class PropertiesFile {
 
         this.objs[key] = unescape(JSON.parse('"' + escapedValue + '"'));
       }
+      return key;
     }
+
+    return '';
   }
 
   addFile(file: string) {
+    this.duplicateKeys[file] = {};
     let data = fs.readFileSync(file, 'utf-8');
     let items = data.split(/\r?\n/);
     let me = this;
+    let fileKeys: ({[key: string]: number}) = {};
     for (let i = 0; i < items.length; i++) {
       let line = items[i];
       while (line.substring(line.length - 1) === '\\') {
@@ -64,7 +72,17 @@ class PropertiesFile {
         line = line + nextLine.trim();
         i++;
       }
-      me.makeKeys(line);
+      const key = me.makeKeys(line);
+
+      //Track duplicate keys in this file
+      if (key && fileKeys[key]) {
+        if (!this.duplicateKeys[file][key]) {
+          this.duplicateKeys[file][key] = [fileKeys[key]]; //Add the first key's line number too
+        }
+        this.duplicateKeys[file][key].push(i+1);
+      } else if (key) {
+        fileKeys[key] = i+1;
+      }
     }
   }
 
@@ -202,6 +220,18 @@ class PropertiesFile {
 
   reset() {
     this.objs = {};
+  }
+
+  hasDuplicateKeys(): boolean {
+    let hasDuplicates = false;
+
+    Object.keys(this.duplicateKeys).forEach(file => {
+      if (Object.keys(this.duplicateKeys[file]).length) {
+        hasDuplicates = true;
+      }
+    });
+
+    return hasDuplicates;
   }
 }
 

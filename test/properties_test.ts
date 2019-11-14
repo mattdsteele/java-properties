@@ -316,4 +316,19 @@ becomes a real new line in json.`;
     expect(combinedProps.get('dupe1')).to.eq('1');
     expect(combinedProps.get('dupe2')).to.eq('2');
   });
+  it('throws away duplicate keys in corrupt file', () => {
+    var combinedProps = of('test/fixtures/duplicateKeys.properties');
+    expect(combinedProps.getKeys()).to.deep.eq(['key1', 'key2']);
+  });
+  it('tracks duplicate keys in corrupt file', () => {
+    var combinedProps = of('test/fixtures/duplicateKeys.properties');
+    expect(combinedProps.getKeys()).to.deep.eq(['key1', 'key2']);
+    expect(combinedProps.hasDuplicateKeys()).to.be.true;
+    expect(combinedProps.duplicateKeys['test/fixtures/duplicateKeys.properties']['key1']).to.deep.eq([1, 3]);
+  });
+  it('finds no duplicate keys in good file', () => {
+    expect(props.hasDuplicateKeys()).to.be.false;
+    expect(Object.keys(props.duplicateKeys)).to.deep.eq(['test/fixtures/example.properties']);
+    expect(Object.keys(props.duplicateKeys['test/fixtures/example.properties']).length).to.eq(0);
+  });
 });
