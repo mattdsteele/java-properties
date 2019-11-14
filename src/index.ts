@@ -19,6 +19,27 @@ class PropertiesFile {
     }
   }
 
+  parseValue(value: string): string {
+      try {
+          const escapedValue = value
+              .replace(/\\"/g, '"') // fix any escaped double quotes
+              .replace(/\\'/g, '\'') // fix any escaped single quotes
+              .replace(/"/g, '\\"') // escape "
+              .replace(/\\:/g, ':') // remove \ before :
+              .replace(/\\=/g, '=') // remove \ before =
+              .replace(/\t/g, "\\t") // tab > \t
+              .replace(/\n/g, "\\n"); // new line > \n
+
+          return unescape(JSON.parse('"' + escapedValue + '"'));
+      } catch {
+          return value
+              .replace(/\\"/g, '"') // fix any escaped double quotes
+              .replace(/\\'/g, '\'') // fix any escaped single quotes
+              .replace(/\\:/g, ':') // remove \ before :
+              .replace(/\\=/g, '='); // remove \ before =
+      }
+  }
+
   makeKeys(line: string): string {
     if (line && line.indexOf('#') !== 0) {
       //let splitIndex = line.indexOf('=');
@@ -41,16 +62,7 @@ class PropertiesFile {
         }
       } else {
         // the key does not exists
-        const escapedValue = value
-          .replace(/\\"/g, '"') // fix any escaped double quotes
-          .replace(/\\'/g, '\'') // fix any escaped single quotes
-          .replace(/"/g, '\\"') // escape "
-          .replace(/\\:/g, ':') // remove \ before :
-          .replace(/\\=/g, '=') // remove \ before =
-          .replace(/\t/g, "\\t") // tab > \t
-          .replace(/\n/g, "\\n"); // new line > \n
-
-        this.objs[key] = unescape(JSON.parse('"' + escapedValue + '"'));
+        this.objs[key] = this.parseValue(value);
       }
       return key;
     }

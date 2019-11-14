@@ -331,4 +331,9 @@ becomes a real new line in json.`;
     expect(Object.keys(props.duplicateKeys)).to.deep.eq(['test/fixtures/example.properties']);
     expect(Object.keys(props.duplicateKeys['test/fixtures/example.properties']).length).to.eq(0);
   });
+  it('handle cyrillic characters', () => {
+    var cyrillicProps = of('test/fixtures/cyrillicCharacters.properties');
+    expect(cyrillicProps.getKeys()).to.deep.eq(['test1']);
+    expect(cyrillicProps.get('test1')).to.eq('Пароль');
+  });
 });
