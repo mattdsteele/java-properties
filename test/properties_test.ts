@@ -281,4 +281,30 @@ describe('properties', () => {
     expect(props.get('with-dashes')).to.eq('With Dashes');
     expect(props.get('with_underscores')).to.eq('With Underscores');
   });
+  it('escapes during getKeysForValue', () => {
+    var escapeProps = of('test/fixtures/escaping.properties');
+    // console.log(`${escapeProps.get('test1')}`);
+    expect(escapeProps.getKeysForValue('G Menu')).to.deep.eq(['test0']);
+    expect(escapeProps.getKeysForValue('"G" Menu')).to.deep.eq(['test1', 'test2']);
+    expect(escapeProps.getKeysForValue(`'G' Menu`)).to.deep.eq(['test3']);
+    expect(escapeProps.getKeysForValue(`This has a tab character,\t.`)).to.deep.eq(['test4']);
+    expect(escapeProps.getKeysForValue(`Unicode characters work to�day.`)).to.deep.eq(['test5']);
+    const test6 =  `Text with slash n
+becomes a real new line in json.`;
+    expect(escapeProps.getKeysForValue(test6)).to.deep.eq(['test6']);
+    expect(escapeProps.getKeysForValue(`Leading characters are ignored.But trailing characters are kept. ! !!`)).to.deep.eq(['test7']);
+    expect(escapeProps.getKeysForValue(`Text with trailing spaces after slash is ignored !`)).to.deep.eq(['test8']);
+    expect(escapeProps.getKeysForValue('This has a slash t character\t.')).to.deep.eq(['test9']);
+    expect(escapeProps.getKeysForValue('A:B')).to.deep.eq(['test10', 'test11']);
+    expect(escapeProps.getKeysForValue('A=B')).to.deep.eq(['test12', 'test13']);
+  });
+  it('combines multiple files with duplicates in order', () => {
+    var combinedProps = of('test/fixtures/duplicate1.properties','test/fixtures/duplicate2.properties', 'test/fixtures/duplicate3.properties');
+    expect(combinedProps.getKeys()).to.deep.eq(['d1Only', 'dupe1', 'd2Only', 'dupe2', 'd3Only']);
+    expect(combinedProps.getFirst('d1Only')).to.eq('1');
+    expect(combinedProps.getFirst('d2Only')).to.eq('2');
+    expect(combinedProps.getFirst('d3Only')).to.eq('3');
+    expect(combinedProps.getFirst('dupe1')).to.eq('1');
+    expect(combinedProps.getFirst('dupe2')).to.eq('2');
+  });
 });

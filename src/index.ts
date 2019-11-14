@@ -39,9 +39,14 @@ class PropertiesFile {
       } else {
         // the key does not exists
         const escapedValue = value
+          .replace(/\\"/g, '"') // fix any escaped double quotes
+          .replace(/\\'/g, '\'') // fix any escaped single quotes
           .replace(/"/g, '\\"') // escape "
           .replace(/\\:/g, ':') // remove \ before :
-          .replace(/\\=/g, '='); // remove \ before =
+          .replace(/\\=/g, '=') // remove \ before =
+          .replace(/\t/g, "\\t") // tab > \t
+          .replace(/\n/g, "\\n"); // new line > \n
+
         this.objs[key] = unescape(JSON.parse('"' + escapedValue + '"'));
       }
     }
@@ -169,6 +174,16 @@ class PropertiesFile {
     let keys = [];
     for (let key in this.objs) {
       if (key.search(matchstr) !== -1) {
+        keys.push(key);
+      }
+    }
+    return keys;
+  }
+
+  getKeysForValue(value: string) {
+    let keys = [];
+    for (let key in this.objs) {
+      if (this.objs[key] === value) {
         keys.push(key);
       }
     }
