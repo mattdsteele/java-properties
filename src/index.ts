@@ -190,6 +190,16 @@ class PropertiesFile {
     return keys;
   }
 
+  flattenFirst() {
+    for (let key in this.objs) {
+      if (Array.isArray(this.objs[key]) && this.objs[key].length >= 2) {
+        this.objs[key] = this.objs[key][0];
+      }
+    }
+
+    return this;
+  }
+
   reset() {
     this.objs = {};
   }

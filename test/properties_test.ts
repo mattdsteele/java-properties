@@ -307,4 +307,13 @@ becomes a real new line in json.`;
     expect(combinedProps.getFirst('dupe1')).to.eq('1');
     expect(combinedProps.getFirst('dupe2')).to.eq('2');
   });
+  it('flattens to 1 value for each key based on first item', () => {
+    var combinedProps = of('test/fixtures/duplicate1.properties','test/fixtures/duplicate2.properties', 'test/fixtures/duplicate3.properties').flattenFirst();
+    expect(combinedProps.getKeys()).to.deep.eq(['d1Only', 'dupe1', 'd2Only', 'dupe2', 'd3Only']);
+    expect(combinedProps.get('d1Only')).to.eq('1');
+    expect(combinedProps.get('d2Only')).to.eq('2');
+    expect(combinedProps.get('d3Only')).to.eq('3');
+    expect(combinedProps.get('dupe1')).to.eq('1');
+    expect(combinedProps.get('dupe2')).to.eq('2');
+  });
 });
