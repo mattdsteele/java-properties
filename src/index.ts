@@ -9,8 +9,8 @@ import fs from 'fs';
 
 class PropertiesFile {
   objs: { [key: string]: any };
-  lookupDuplicateKeys: boolean = false;
-  lookupDuplicateValues: boolean = false;
+  lookupDuplicateKeys: boolean;
+  lookupDuplicateValues: boolean;
   duplicateKeys: { [file: string]: ({[key: string]: number[]}) }; //For tracking if a file is corrupt with duplicate keys - records the line numbers
   duplicateValues: { [file: string]: ({[value: string]: number[]}) }; //For tracking if a file is corrupt with duplicate values - records the line numbers
 
@@ -18,6 +18,8 @@ class PropertiesFile {
     this.objs = {};
     this.duplicateKeys = {};
     this.duplicateValues = {};
+    this.lookupDuplicateKeys = false;
+    this.lookupDuplicateValues = false;
     if (args.length) {
       this.of.apply(this, args);
     }
