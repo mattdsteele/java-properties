@@ -9,14 +9,30 @@ import fs from 'fs';
 
 class PropertiesFile {
   objs: { [key: string]: any };
+  lookupDuplicateKeys: boolean = false;
+  lookupDuplicateValues: boolean = false;
   duplicateKeys: { [file: string]: ({[key: string]: number[]}) }; //For tracking if a file is corrupt with duplicate keys - records the line numbers
+  duplicateValues: { [file: string]: ({[value: string]: number[]}) }; //For tracking if a file is corrupt with duplicate values - records the line numbers
 
   constructor(...args: string[]) {
     this.objs = {};
     this.duplicateKeys = {};
+    this.duplicateValues = {};
     if (args.length) {
       this.of.apply(this, args);
     }
+  }
+
+  enableLookupDuplicateKeys() {
+    this.lookupDuplicateKeys = true;
+
+    return this;
+  }
+
+  enableLookupDuplicateValues() {
+    this.lookupDuplicateValues = true;
+
+    return this;
   }
 
   parseValue(value: string): string {
@@ -40,7 +56,7 @@ class PropertiesFile {
       }
   }
 
-  makeKeys(line: string): string {
+  makeKeys(line: string): string[] | null {
     if (line && line.indexOf('#') !== 0) {
       //let splitIndex = line.indexOf('=');
       let separatorPositions = ['=',':']
@@ -49,33 +65,36 @@ class PropertiesFile {
       let splitIndex = Math.min(...separatorPositions);
       let key = line.substring(0, splitIndex).trim();
       let value = line.substring(splitIndex + 1).trim();
+      let parsedValue = this.parseValue(value);
       // if keys already exists ...
       if (this.objs.hasOwnProperty(key)) {
         // if it is already an Array
         if (Array.isArray(this.objs[key])) {
           // just push the new value
-          this.objs[key].push(value);
+          this.objs[key].push(parsedValue);
         } else {
           // transform the value into Array
           let oldValue = this.objs[key];
-          this.objs[key] = [oldValue, value];
+          this.objs[key] = [oldValue, parsedValue];
         }
       } else {
         // the key does not exists
-        this.objs[key] = this.parseValue(value);
+        this.objs[key] = parsedValue;
       }
-      return key;
+      return [key, parsedValue];
     }
 
-    return '';
+    return null;
   }
 
   addFile(file: string) {
     this.duplicateKeys[file] = {};
+    this.duplicateValues[file] = {};
     let data = fs.readFileSync(file, 'utf-8');
     let items = data.split(/\r?\n/);
     let me = this;
     let fileKeys: ({[key: string]: number}) = {};
+    let fileValues: ({[value: string]: number}) = {};
     for (let i = 0; i < items.length; i++) {
       let line = items[i];
       while (line.substring(line.length - 1) === '\\') {
@@ -84,16 +103,26 @@ class PropertiesFile {
         line = line + nextLine.trim();
         i++;
       }
-      const key = me.makeKeys(line);
+      const keyValue = me.makeKeys(line);
 
       //Track duplicate keys in this file
-      if (key && fileKeys[key]) {
-        if (!this.duplicateKeys[file][key]) {
-          this.duplicateKeys[file][key] = [fileKeys[key]]; //Add the first key's line number too
+      if (this.lookupDuplicateKeys && keyValue && fileKeys[keyValue[0]]) {
+        if (!this.duplicateKeys[file][keyValue[0]]) {
+          this.duplicateKeys[file][keyValue[0]] = [fileKeys[keyValue[0]]]; //Add the first key's line number too
         }
-        this.duplicateKeys[file][key].push(i+1);
-      } else if (key) {
-        fileKeys[key] = i+1;
+        this.duplicateKeys[file][keyValue[0]].push(i+1);
+      } else if (this.lookupDuplicateKeys && keyValue) {
+        fileKeys[keyValue[0]] = i+1;
+      }
+
+      //Track duplicate values in this file
+      if (this.lookupDuplicateValues && keyValue && fileValues[keyValue[1]]) {
+        if (!this.duplicateValues[file][keyValue[1]]) {
+          this.duplicateValues[file][keyValue[1]] = [fileValues[keyValue[1]]]; //Add the first key's line number too
+        }
+        this.duplicateValues[file][keyValue[1]].push(i+1);
+      } else if (this.lookupDuplicateValues && keyValue) {
+        fileValues[keyValue[1]] = i+1;
       }
     }
   }
@@ -102,6 +131,8 @@ class PropertiesFile {
     for (let i = 0; i < args.length; i++) {
       this.addFile(args[i]);
     }
+
+    return this;
   }
 
   get(key: string, defaultValue?: string) {
@@ -238,7 +269,23 @@ class PropertiesFile {
     let hasDuplicates = false;
 
     Object.keys(this.duplicateKeys).forEach(file => {
+      if (hasDuplicates) return;
+
       if (Object.keys(this.duplicateKeys[file]).length) {
+        hasDuplicates = true;
+      }
+    });
+
+    return hasDuplicates;
+  }
+
+  hasDuplicateValues(): boolean {
+    let hasDuplicates = false;
+
+    Object.keys(this.duplicateValues).forEach(file => {
+      if (hasDuplicates) return;
+
+      if (Object.keys(this.duplicateValues[file]).length) {
         hasDuplicates = true;
       }
     });

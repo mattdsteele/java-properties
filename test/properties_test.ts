@@ -321,19 +321,25 @@ becomes a real new line in json.`;
     expect(combinedProps.getKeys()).to.deep.eq(['key1', 'key2']);
   });
   it('tracks duplicate keys in corrupt file', () => {
-    var combinedProps = of('test/fixtures/duplicateKeys.properties');
+    var combinedProps = new PropertiesFile().enableLookupDuplicateKeys().of('test/fixtures/duplicateKeys.properties');
     expect(combinedProps.getKeys()).to.deep.eq(['key1', 'key2']);
     expect(combinedProps.hasDuplicateKeys()).to.be.true;
     expect(combinedProps.duplicateKeys['test/fixtures/duplicateKeys.properties']['key1']).to.deep.eq([1, 3]);
   });
   it('finds no duplicate keys in good file', () => {
-    expect(props.hasDuplicateKeys()).to.be.false;
-    expect(Object.keys(props.duplicateKeys)).to.deep.eq(['test/fixtures/example.properties']);
-    expect(Object.keys(props.duplicateKeys['test/fixtures/example.properties']).length).to.eq(0);
+    const goodProps = new PropertiesFile().enableLookupDuplicateKeys().of('test/fixtures/example.properties');
+    expect(goodProps.hasDuplicateKeys()).to.be.false;
+    expect(Object.keys(goodProps.duplicateKeys)).to.deep.eq(['test/fixtures/example.properties']);
+    expect(Object.keys(goodProps.duplicateKeys['test/fixtures/example.properties']).length).to.eq(0);
   });
   it('handle cyrillic characters', () => {
     var cyrillicProps = of('test/fixtures/cyrillicCharacters.properties');
     expect(cyrillicProps.getKeys()).to.deep.eq(['test1']);
     expect(cyrillicProps.get('test1')).to.eq('Пароль');
+  });
+  it('tracks duplicate values in file', () => {
+    var dupeProps = new PropertiesFile().enableLookupDuplicateValues().of('test/fixtures/duplicate1.properties');
+    expect(dupeProps.hasDuplicateValues()).to.be.true;
+    expect(dupeProps.duplicateValues['test/fixtures/duplicate1.properties']['1']).to.deep.eq([1, 2]);
   });
 });
