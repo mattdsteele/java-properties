@@ -5,7 +5,7 @@
  * Licensed under the MIT license.
  */
 
-import fs from 'fs';
+import fs from 'node:fs';
 
 class PropertiesFile {
   objs: { [key: string]: any };

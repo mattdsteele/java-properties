@@ -1,0 +1,11 @@
+{
+  // Specify "loader" for native ESM
+  "loader": "ts-node/esm",
+  "extensions": ["ts", "tsx"],
+  "spec": [
+    "test/**/*_test.*"
+  ],
+  "watch-files": [
+    "src"
+  ]
+}

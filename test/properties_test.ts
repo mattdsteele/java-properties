@@ -1,4 +1,4 @@
-import { PropertiesFile, of } from '../src/index';
+import { PropertiesFile, of } from '../src/index.js';
 import { expect } from 'chai';
 let props: PropertiesFile;
 
