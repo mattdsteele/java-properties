@@ -2,3 +2,6 @@
 lib
 pkg
 *.sublime*
+
+# stryker temp files
+.stryker-tmp
